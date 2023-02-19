@@ -78,7 +78,7 @@ for FILE in $BACKUP_DIR/*.gz; do
     echo "Uploading backup file $FILE to S3 object key $S3_OBJECT_KEY..."
     s3cmd --progress --access_key=$S3_ACCESS_KEY --secret_key=$S3_SECRET_KEY --host=$S3_ENDPOINT --host-bucket="%s.$S3_ENDPOINT" put $FILE s3://$S3_BUCKET/$S3_OBJECT_KEY > /dev/null
     # Call the API to notify of completion
-    curl -s -X POST -d "file=$S3_OBJECT_KEY&size=$BACKUP_SIZE" $BACKUP_API_URL > /dev/null
+   curl -s -X POST -d "file=$S3_OBJECT_KEY&size=$BACKUP_SIZE&hostname=$HOSTNAME&timestamp=$TIMESTAMP&database=$DB" $BACKUP_API_URL > /dev/null
 done
 
 echo "Backup process completed successfully."
