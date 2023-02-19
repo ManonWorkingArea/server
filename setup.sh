@@ -77,20 +77,12 @@ echo "alias database='/root/database.sh'" >> ~/.bashrc
 source ~/.bashrc
 echo "Done adding alias for database."
 
-# Show server IP
-clear
-echo "Server IP: $(hostname -I)"
+# Get the server's IP address and display it to the user
+SERVER_IP=$(hostname -I | awk '{print $1}')
+echo -e "\e[1mServer IP address:\e[0m $SERVER_IP"
 
 # Show instructions
 echo -e "\e[1mTo use backup.sh\e[0m, run \e[1m'backup'\e[0m in the terminal. This will create a backup of all databases on the server and upload them to an S3 bucket. You will need to provide your S3 access key, secret key, endpoint, bucket, and API URL in the backup.sh script before running it."
 
 echo -e "\e[1mTo use database.sh\e[0m, run \e[1m'database'\e[0m in the terminal. This will allow you to add, delete, or list databases on the server. You will need to provide the MySQL root username and password in the database.sh script before running it."
 
-# Get the server's IP address and display it to the user
-SERVER_IP=$(hostname -I | awk '{print $1}')
-echo -e "\e[1mServer IP address:\e[0m $SERVER_IP"
-
-# Display the server's CPU and memory usage
-CPU_USAGE=$(top -bn1 | grep load | awk '{printf "%.2f%%", $(NF-2)*100}')
-MEMORY_USAGE=$(free | awk '/Mem/{printf "%.2f%%", $3/$2*100}')
-echo -e "\e[1mServer state:\e[0m CPU usage: $CPU_USAGE, Memory usage: $MEMORY_USAGE"
