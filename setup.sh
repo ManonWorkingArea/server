@@ -81,13 +81,7 @@ echo "Done adding alias for database."
 clear
 echo "Server IP: $(hostname -I)"
 
-# Show server state CPU MEMORY
-clear
-echo "Server state:"
-echo "$(glances -t 5)" 
-
 # Show instructions
-clear
 echo -e "\e[1mTo use backup.sh\e[0m, run \e[1m'backup'\e[0m in the terminal. This will create a backup of all databases on the server and upload them to an S3 bucket. You will need to provide your S3 access key, secret key, endpoint, bucket, and API URL in the backup.sh script before running it."
 
 echo -e "\e[1mTo use database.sh\e[0m, run \e[1m'database'\e[0m in the terminal. This will allow you to add, delete, or list databases on the server. You will need to provide the MySQL root username and password in the database.sh script before running it."
