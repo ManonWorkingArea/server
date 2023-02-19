@@ -38,3 +38,6 @@ chmod +x backup.sh
 # Add alias for backup
 echo "alias backup='/root/backup.sh'" >> ~/.bashrc
 source ~/.bashrc
+
+echo "alias database='/root/database.sh'" >> ~/.bashrc
+source ~/.bashrc
