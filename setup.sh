@@ -11,10 +11,6 @@ hostnamectl set-hostname $new_hostname
 # Change timezone
 timedatectl set-timezone Asia/Bangkok
 
-# Update and upgrade
-apt-get update
-apt-get upgrade -y
-
 # Configure Mariadb for remote access
 sed -i 's/bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
 systemctl restart mariadb.service
