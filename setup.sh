@@ -38,7 +38,3 @@ chmod +x backup.sh
 # Add alias for backup
 echo "alias backup='/root/backup.sh'" >> ~/.bashrc
 source ~/.bashrc
-
-# Add alias for Glances
-echo "alias monitor='glances -w'" >> ~/.bashrc
-source ~/.bashrc
