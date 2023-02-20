@@ -1,11 +1,14 @@
 #!/bin/bash
 
+# Read API URL from config file
+if [ -f "/root/monitor.conf" ]; then
+  . "/root/monitor.conf"
+fi
+
 # Check if API URL is set
 if [ -z "$API_URL" ]; then
   read -p "Enter the API URL to send server information: " API_URL
-  echo "API_URL=\"$API_URL\"" >> /root/monitor.sh
-else
-  source /root/monitor.sh
+  echo "API_URL=\"$API_URL\"" > /root/monitor.conf
 fi
 
 # Get server stats
