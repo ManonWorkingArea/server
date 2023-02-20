@@ -9,7 +9,7 @@ To use the script, first SSH into your server as the root user or a user with su
 
 bashCopy code
 
-`wget https://raw.githubusercontent.com/ManonWorkingArea/server/main/setup.sh` 
+`wget --no-cache https://raw.githubusercontent.com/ManonWorkingArea/server/main/setup.sh` 
 
 Next, make the script executable with the following command:
 
