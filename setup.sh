@@ -154,5 +154,3 @@ for task in "${completed_tasks[@]}"; do
 done
 
 echo -e "\nSetup complete. Please review the instructions above for how to use the backup.sh and database.sh scripts.\n"
-
-

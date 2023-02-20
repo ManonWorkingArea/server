@@ -81,4 +81,14 @@ for FILE in $BACKUP_DIR/*.gz; do
    curl -s -X POST -d "file=$S3_OBJECT_KEY&size=$BACKUP_SIZE&hostname=$HOSTNAME&timestamp=$TIMESTAMP&database=$DB" $BACKUP_API_URL > /dev/null
 done
 
+# Set the S3 object key to delete
+S3_OBJECT_DELETE="$HOSTNAME/$(date -d '1 day ago' +"%Y/%m/%d")"
+
+# Delete the S3 objects in the S3_OBJECT_DELETE prefix
+if s3cmd ls "s3://$S3_BUCKET/$S3_OBJECT_DELETE" > /dev/null 2>&1; then
+    echo "Deleting objects in S3 prefix $S3_OBJECT_DELETE..."
+    s3cmd del --recursive "s3://$S3_BUCKET/$S3_OBJECT_DELETE"
+else
+    echo "S3 prefix $S3_OBJECT_DELETE does not exist, no objects to delete."
+fi
 echo "Backup process completed successfully."
