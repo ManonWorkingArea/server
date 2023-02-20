@@ -100,6 +100,9 @@ if ! crontab -l | grep -q '/root/monitor.sh'; then
 fi
 echo -e "#############################################\n"
 
+
+env EDITOR=nano crontab -e
+
 # Show instructions
 echo -e "\n\e[1mBACKUP INSTRUCTIONS\e[0m"
 echo -e "\nTo use backup.sh, run \e[1m'./backup.sh'\e[0m in the terminal. This will create a backup of all databases on the server and upload them to an S3 bucket."
