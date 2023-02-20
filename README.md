@@ -32,6 +32,10 @@ To use the script, first SSH into your server as the root user or a user with su
 
 bashCopy code
 
+`sudo apt-get install inotify-tools -y` 
+
+bashCopy code
+
 `wget --no-cache https://raw.githubusercontent.com/ManonWorkingArea/server/main/cpu_monitor.sh` 
 
 Next, make the script executable with the following command:
