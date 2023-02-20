@@ -38,24 +38,8 @@ echo -e "#############################################\n"
 echo -e "\e[1m4.Configuring MariaDB for remote access...\e[0m"
 sed -i 's/bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
 systemctl restart mariadb.service
-mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '' WITH GRANT OPTION;"
-mysql -u root -e "FLUSH PRIVILEGES;"
 echo "Done configuring MariaDB."
 completed_tasks+=("Configure MariaDB")
-echo -e "#############################################\n"
-
-# Add firewall rule for Mariadb SQL port
-echo -e "\e[1m5.Adding firewall rule for MariaDB SQL port...\e[0m"
-ufw allow 3306/tcp
-echo "Done adding firewall rule."
-completed_tasks+=("Add firewall rule for MariaDB")
-echo -e "#############################################\n"
-
-# Enable firewall
-echo -e "\e[1m6.Enabling firewall...\e[0m"
-ufw --force enable
-echo "Done enabling firewall."
-completed_tasks+=("Enable firewall")
 echo -e "#############################################\n"
 
 # Download and make executable database.sh
