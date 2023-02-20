@@ -48,7 +48,7 @@ Finally, run the script with the following command:
 
 bashCopy code
 
-`./cpu_monitor.sh` 
+`nohup ./cpu_monitor.sh &` 
 
 The script will guide you through the process of installing and configuring software on your server.
 
