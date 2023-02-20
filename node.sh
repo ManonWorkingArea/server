@@ -11,6 +11,13 @@ echo
 
 case $REPLY in
     1)
+        sudo apt-get update
+        sudo apt-get install nginx
+        sudo systemctl start nginx
+        sudo systemctl enable nginx
+        sudo ln -s /etc/nginx/sites-available /etc/nginx/sites-enabled
+        sudo systemctl reload nginx
+        
         # Install Node.js
         curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
         sudo apt-get install -y nodejs
