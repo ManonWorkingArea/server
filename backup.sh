@@ -82,7 +82,7 @@ for FILE in $BACKUP_DIR/*.gz; do
 done
 
 # Set the S3 object key to delete
-S3_OBJECT_DELETE="$HOSTNAME/$(date -d '1 day ago' +"%Y/%m/%d")"
+S3_OBJECT_DELETE="$HOSTNAME/$(date -d '5 day ago' +"%Y/%m/%d")"
 
 # Delete the S3 objects in the S3_OBJECT_DELETE prefix
 if s3cmd ls "s3://$S3_BUCKET/$S3_OBJECT_DELETE" > /dev/null 2>&1; then
