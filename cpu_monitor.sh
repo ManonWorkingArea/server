@@ -1,47 +1,43 @@
 #!/bin/bash
 
-# Get the path to the directory containing this script
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Function to add a new API URL to the config file
+add_api_url() {
+  echo "API URL is not configured. Please enter API URL:"
+  read API_URL
+  echo "API_URL=$API_URL" > cpu_monitor.conf
+}
 
-# Path to the configuration file
-config_file="$script_dir/cpu_monitor.conf"
-
-# Load the configuration file if it exists
-if [ -f "$config_file" ]; then
-  source "$config_file"
+# Check if the config file exists
+if [ ! -f "cpu_monitor.conf" ]; then
+  add_api_url
+else
+  # Load the config file
+  source cpu_monitor.conf
 fi
 
-# Prompt the user to add the API URL if it's not set
-if [ -z "$API_URL" ]; then
-  read -p "Please enter the API URL: " API_URL
-  echo "API_URL=$API_URL" >> "$config_file"
+# Check if the crontab is set up
+if ! crontab -l | grep -q "/root/cpu_monitor.sh"; then
+  # Add a new crontab job to run the script every 5 minutes
+  (crontab -l ; echo "*/5 * * * * /bin/bash /root/cpu_monitor.sh") | crontab -
 fi
 
-# Prompt the user to add the CPU load threshold if it's not set
-if [ -z "$LOAD_THRESHOLD" ]; then
-  read -p "Please enter the CPU load threshold (in percent): " LOAD_THRESHOLD
-  echo "LOAD_THRESHOLD=$LOAD_THRESHOLD" >> "$config_file"
-fi
+# Get server stats
+UPTIME=$(uptime)
+CPU_LOAD=$(top -bn1 | grep load | awk '{printf "%.2f", $(NF-2)}')
+CPU_CORES=$(nproc)
+MEMORY_TOTAL=$(free -h | grep Mem | awk '{print $2}')
+MEMORY_USED=$(free -h | grep Mem | awk '{print $3}')
+MEMORY_FREE=$(free -h | grep Mem | awk '{print $4}')
+DISK_TOTAL=$(df -h / | tail -n 1 | awk '{print $2}')
+DISK_USED=$(df -h / | tail -n 1 | awk '{print $3}')
+DISK_FREE=$(df -h / | tail -n 1 | awk '{print $4}')
+SWAP_TOTAL=$(free -h | grep Swap | awk '{print $2}')
+SWAP_USED=$(free -h | grep Swap | awk '{print $3}')
+SWAP_FREE=$(free -h | grep Swap | awk '{print $4}')
 
-# Check if the crontab job already exists
-if ! crontab -l | grep -q "cpu_monitor.sh"; then
-  # Add the crontab job to run every 5 minutes
-  (crontab -l ; echo "*/5 * * * * $script_dir/cpu_monitor.sh") | crontab -
-fi
+# Get server hostname and IP address
+HOSTNAME=$(hostname)
+IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
-# Loop forever
-while true
-do
-  # Get the current CPU usage as a percentage
-  cpu_load=$(top -b -n1 | grep "Cpu(s)" | awk '{print $2 + $4}')
-
-  # Check if the CPU usage is over the threshold
-  if (( $(echo "$cpu_load > $LOAD_THRESHOLD" | bc -l) ))
-  then
-    # Call the API URL using cURL
-    curl -X GET $API_URL
-  fi
-
-  # Sleep for 10 seconds before checking the CPU usage again
-  sleep 10
-done
+# Send server stats to API endpoint
+curl -s -X POST -d "hostname=$HOSTNAME&ip_address=$IP_ADDRESS&uptime=$UPTIME&cpu_load=$CPU_LOAD&cpu_cores=$CPU_CORES&memory_total=$MEMORY_TOTAL&memory_used=$MEMORY_USED&memory_free=$MEMORY_FREE&disk_total=$DISK_TOTAL&disk_used=$DISK_USED&disk_free=$DISK_FREE&swap_total=$SWAP_TOTAL&swap_used=$SWAP_USED&swap_free=$SWAP_FREE" $API_URL > /dev/null
