@@ -89,6 +89,12 @@ echo "Done adding alias for database."
 completed_tasks+=("Add alias for database")
 echo "#############################################"
 
+# Add cron job to run backup.sh every hour
+echo "Add cron job to run backup.sh every hour..."
+(crontab -l 2>/dev/null; echo "0 * * * * /root/backup.sh") | crontab -
+completed_tasks+=("Added cron job to run backup.sh every hour")
+echo "#############################################"
+
 # Get the server's IP address and display it to the user
 SERVER_IP=$(hostname -I | awk '{print $1}')
 echo -e "\e[1mServer IP address:\e[0m $SERVER_IP"
