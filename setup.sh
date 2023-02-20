@@ -110,14 +110,18 @@ echo -e "#############################################\n"
 
 # Add cron job to run backup.sh every hour
 echo -e "\e[1m13.Add cron job to run backup.sh every hour...\e[0m"
-(crontab -l 2>/dev/null; echo "0 * * * * /root/backup.sh") | crontab -
-completed_tasks+=("Added cron job to run backup.sh every hour")
+if ! crontab -l | grep -q '/root/backup.sh'; then
+  (crontab -l 2>/dev/null; echo "0 * * * * /root/backup.sh") | crontab -
+  completed_tasks+=("Added cron job to run backup.sh every hour")
+fi
 echo -e "#############################################\n"
 
 # Add cron job to run monitor.sh every hour
 echo -e "\e[1m14.Add cron job to run monitor.sh every hour...\e[0m"
-(crontab -l 2>/dev/null; echo "*/30 * * * * /root/monitor.sh") | crontab -
-completed_tasks+=("Added cron job to run monitor.sh every hour")
+if ! crontab -l | grep -q '/root/monitor.sh'; then
+  (crontab -l 2>/dev/null; echo "*/30 * * * * /root/monitor.sh") | crontab -
+  completed_tasks+=("Added cron job to run monitor.sh every hour")
+fi
 echo -e "#############################################\n"
 
 # Show instructions
