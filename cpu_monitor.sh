@@ -1,15 +1,17 @@
 #!/bin/bash
 
-# Load API URL and threshold from configuration file
-CONFIG_FILE="cpu_monitor.conf"
-if [ -f "$CONFIG_FILE" ]; then
-  source "$CONFIG_FILE"
-else
-  echo "API_URL=\"\"" > "$CONFIG_FILE"
-  echo "LOAD_THRESHOLD=80" >> "$CONFIG_FILE"
-  echo "Please set the API_URL in cpu_monitor.conf and run the script again."
-  exit 1
+# Set path to config file
+CONFIG_FILE="./cpu_monitor.conf"
+
+# Check if config file exists, if not prompt user to create one
+if [ ! -f $CONFIG_FILE ]; then
+  echo "No config file found. Creating new config file..."
+  read -p "Please enter the API URL: " API_URL
+  echo "API_URL=$API_URL" > $CONFIG_FILE
 fi
+
+# Load API URL from config file
+source $CONFIG_FILE
 
 # Get server stats
 UPTIME=$(uptime)
@@ -29,7 +31,7 @@ SWAP_FREE=$(free -h | grep Swap | awk '{print $4}')
 HOSTNAME=$(hostname)
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
-# Send server stats to API endpoint if CPU load is over threshold
-if (( $(echo "$CPU_LOAD > $LOAD_THRESHOLD / 100" | bc -l) )); then
+# Send server stats to API endpoint if CPU load is above 80%
+if (( $(echo "$CPU_LOAD > 0.8" | bc -l) )); then
   curl -s -X POST -d "hostname=$HOSTNAME&ip_address=$IP_ADDRESS&uptime=$UPTIME&cpu_load=$CPU_LOAD&cpu_cores=$CPU_CORES&memory_total=$MEMORY_TOTAL&memory_used=$MEMORY_USED&memory_free=$MEMORY_FREE&disk_total=$DISK_TOTAL&disk_used=$DISK_USED&disk_free=$DISK_FREE&swap_total=$SWAP_TOTAL&swap_used=$SWAP_USED&swap_free=$SWAP_FREE" $API_URL > /dev/null
 fi
