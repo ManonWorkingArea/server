@@ -1,24 +1,14 @@
 #!/bin/bash
 
-# Function to add a new API URL to the config file
-add_api_url() {
-  echo "API URL is not configured. Please enter API URL:"
-  read API_URL
-  echo "API_URL=$API_URL" > cpu_monitor.conf
-}
-
-# Check if the config file exists
-if [ ! -f "cpu_monitor.conf" ]; then
-  add_api_url
+# Load API URL and threshold from configuration file
+CONFIG_FILE="cpu_monitor.conf"
+if [ -f "$CONFIG_FILE" ]; then
+  source "$CONFIG_FILE"
 else
-  # Load the config file
-  source cpu_monitor.conf
-fi
-
-# Check if the crontab is set up
-if ! crontab -l | grep -q "/root/cpu_monitor.sh"; then
-  # Add a new crontab job to run the script every 5 minutes
-  (crontab -l ; echo "*/5 * * * * /bin/bash /root/cpu_monitor.sh") | crontab -
+  echo "API_URL=\"\"" > "$CONFIG_FILE"
+  echo "LOAD_THRESHOLD=80" >> "$CONFIG_FILE"
+  echo "Please set the API_URL in cpu_monitor.conf and run the script again."
+  exit 1
 fi
 
 # Get server stats
@@ -39,5 +29,7 @@ SWAP_FREE=$(free -h | grep Swap | awk '{print $4}')
 HOSTNAME=$(hostname)
 IP_ADDRESS=$(hostname -I | awk '{print $1}')
 
-# Send server stats to API endpoint
-curl -s -X POST -d "hostname=$HOSTNAME&ip_address=$IP_ADDRESS&uptime=$UPTIME&cpu_load=$CPU_LOAD&cpu_cores=$CPU_CORES&memory_total=$MEMORY_TOTAL&memory_used=$MEMORY_USED&memory_free=$MEMORY_FREE&disk_total=$DISK_TOTAL&disk_used=$DISK_USED&disk_free=$DISK_FREE&swap_total=$SWAP_TOTAL&swap_used=$SWAP_USED&swap_free=$SWAP_FREE" $API_URL > /dev/null
+# Send server stats to API endpoint if CPU load is over threshold
+if (( $(echo "$CPU_LOAD > $LOAD_THRESHOLD / 100" | bc -l) )); then
+  curl -s -X POST -d "hostname=$HOSTNAME&ip_address=$IP_ADDRESS&uptime=$UPTIME&cpu_load=$CPU_LOAD&cpu_cores=$CPU_CORES&memory_total=$MEMORY_TOTAL&memory_used=$MEMORY_USED&memory_free=$MEMORY_FREE&disk_total=$DISK_TOTAL&disk_used=$DISK_USED&disk_free=$DISK_FREE&swap_total=$SWAP_TOTAL&swap_used=$SWAP_USED&swap_free=$SWAP_FREE" $API_URL > /dev/null
+fi
