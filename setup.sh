@@ -2,6 +2,7 @@
 
 completed_tasks=()
 clear
+echo
 echo -e "#############################################"
 echo -e "\e[1mThis script will install and configure various software on your server.\e[0m"
 read -p "Do you want to continue? (y/n) " answer
@@ -10,6 +11,7 @@ if [[ $answer != "y" ]]; then
   echo "Setup cancelled."
   exit 0
 fi
+echo
 echo -e "#############################################"
 # Install packages
 echo -e "\e[1m1.Installing packages...\e[0m"
@@ -17,6 +19,7 @@ apt-get update
 apt-get install -y curl s3cmd glances htop
 echo "Done installing packages."
 completed_tasks+=("Install packages")
+echo
 echo -e "#############################################\n"
 
 # Change hostname
@@ -25,6 +28,7 @@ read -p "Enter new hostname: " new_hostname
 hostnamectl set-hostname $new_hostname
 echo "Done changing hostname."
 completed_tasks+=("Change hostname")
+echo
 echo -e "#############################################\n"
 
 # Change timezone
@@ -32,6 +36,7 @@ echo -e "\e[1m3.Changing timezone...\e[0m"
 timedatectl set-timezone Asia/Bangkok
 echo "Done changing timezone."
 completed_tasks+=("Change timezone")
+echo
 echo -e "#############################################\n"
 
 # Download and make executable database.sh
@@ -40,6 +45,7 @@ curl -o database.sh https://raw.githubusercontent.com/ManonWorkingArea/server/ma
 chmod +x database.sh
 echo "Done downloading and making database.sh executable."
 completed_tasks+=("Download and make database.sh executable")
+echo
 echo -e "#############################################\n"
 
 # Download and make executable backup.sh
@@ -48,15 +54,16 @@ curl -o backup.sh https://raw.githubusercontent.com/ManonWorkingArea/server/main
 chmod +x backup.sh
 echo "Done downloading and making backup.sh executable."
 completed_tasks+=("Download and make backup.sh executable")
+echo
 echo -e "#############################################\n"
 
 # Download and make executable monitor.sh
-echo -e "\e[1m9.Downloading and making backup.sh executable...\e[0m"
+echo -e "\e[1m9.Downloading and making monitor.sh executable...\e[0m"
 curl -o monitor.sh https://raw.githubusercontent.com/ManonWorkingArea/server/main/monitor.sh
 chmod +x monitor.sh
 echo "Done downloading and making monitor.sh executable."
-completed_tasks+=("Download and make monils
-tor.sh executable")
+completed_tasks+=("Download and make monitor.sh executable")
+echo
 echo -e "#############################################\n"
 
 # Add alias for backup
@@ -65,6 +72,7 @@ echo "alias backup='/root/backup.sh'" >> ~/.bashrc
 source ~/.bashrc
 echo "Done adding alias for backup."
 completed_tasks+=("Add alias for backup")
+echo
 echo -e "#############################################\n"
 
 # Add alias for database
@@ -73,6 +81,7 @@ echo "alias database='/root/database.sh'" >> ~/.bashrc
 source ~/.bashrc
 echo "Done adding alias for database."
 completed_tasks+=("Add alias for database")
+echo
 echo -e "#############################################\n"
 
 # Add alias for monitor
@@ -81,6 +90,7 @@ echo "alias monitor='/root/monitor.sh'" >> ~/.bashrc
 source ~/.bashrc
 echo "Done adding alias for monitor."
 completed_tasks+=("Add alias for monitor")
+echo
 echo -e "#############################################\n"
 
 
@@ -90,6 +100,7 @@ if ! crontab -l | grep -q '/root/backup.sh'; then
   (crontab -l 2>/dev/null; echo "0 * * * * /root/backup.sh") | crontab -
   completed_tasks+=("Added cron job to run backup.sh every hour")
 fi
+echo
 echo -e "#############################################\n"
 
 # Add cron job to run monitor.sh every hour
@@ -98,10 +109,32 @@ if ! crontab -l | grep -q '/root/monitor.sh'; then
   (crontab -l 2>/dev/null; echo "*/30 * * * * /root/monitor.sh") | crontab -
   completed_tasks+=("Added cron job to run monitor.sh every hour")
 fi
+echo
 echo -e "#############################################\n"
 
+# Set nano as the default editor for crontab -e
+echo -e "\e[1mSetting nano as the default editor for crontab -e...\e[0m"
+echo 'export VISUAL=nano; export EDITOR=nano' >> ~/.bashrc
+echo "Nano is now the default editor for crontab -e"
+ completed_tasks+=("Nano is now the default editor for crontab -e")
+echo
+echo -e "#############################################\n"
 
-env EDITOR=nano crontab -e
+# Set up trigger to reload crontab
+echo -e "\e[1mSetting up trigger to reload crontab...\e[0m"
+echo 'alias crontab=" (crontab $@ && service cron reload )"' >> ~/.bashrc
+echo "Trigger to reload crontab set up"
+ completed_tasks+=("Trigger to reload crontab set up")
+echo
+echo -e "#############################################\n"
+
+# Reload crontab
+echo -e "\e[1mReloading crontab...\e[0m"
+crontab -l | crontab -
+echo "Crontab reloaded"
+ completed_tasks+=("Crontab reloaded")
+ echo
+ echo -e "#############################################\n"
 
 # Show instructions
 echo -e "\n\e[1mBACKUP INSTRUCTIONS\e[0m"
@@ -131,5 +164,7 @@ echo -e "\n\e[1mCOMPLETED TASKS\e[0m"
 for task in "${completed_tasks[@]}"; do
     echo "- $task"
 done
-
+echo
 echo -e "\nSetup complete. Please review the instructions above for how to use the backup.sh and database.sh scripts.\n"
+echo
+echo -e "#############################################\n"
