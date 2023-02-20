@@ -75,10 +75,11 @@ echo "#############################################"
 
 # Download and make executable monitor.sh
 echo "Downloading and making backup.sh executable..."
-curl -o backup.sh https://raw.githubusercontent.com/ManonWorkingArea/server/main/monitor.sh
+curl -o monitor.sh https://raw.githubusercontent.com/ManonWorkingArea/server/main/monitor.sh
 chmod +x monitor.sh
 echo "Done downloading and making monitor.sh executable."
-completed_tasks+=("Download and make monitor.sh executable")
+completed_tasks+=("Download and make monils
+tor.sh executable")
 echo "#############################################"
 
 # Add alias for backup
