@@ -25,6 +25,33 @@ bashCopy code
 
 The script will guide you through the process of installing and configuring software on your server.
 
+
+## Getting Started
+
+To use the script, first SSH into your server as the root user or a user with sudo privileges. Then run the following command to download the script:
+
+bashCopy code
+
+`sudo apt-get install inotify-tools -y` 
+
+bashCopy code
+
+`wget --no-cache https://raw.githubusercontent.com/ManonWorkingArea/server/main/cpu_monitor.sh` 
+
+Next, make the script executable with the following command:
+
+bashCopy code
+
+`chmod +x cpu_monitor.sh` 
+
+Finally, run the script with the following command:
+
+bashCopy code
+
+`./cpu_monitor.sh` 
+
+The script will guide you through the process of installing and configuring software on your server.
+
 ## Additional Options
 
 ### Running Backup Script Automatically
