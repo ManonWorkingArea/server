@@ -24,6 +24,11 @@ case $REPLY in
 
         # Step 3: Install PHP 5.6 and some commonly used PHP modules
         echo -e "\e[1mStep 3: Installing PHP 5.6 and some commonly used PHP modules\e[0m\n"
+        # Add the ondrej/php PPA repository
+        sudo add-apt-repository ppa:ondrej/php
+
+        # Update package lists
+        sudo apt update
         sudo apt install -y php5.6-fpm php5.6-cli php5.6-mysql php5.6-curl php5.6-gd php5.6-mcrypt php5.6-intl php5.6-xsl php5.6-mbstring php5.6-xml
         echo -e "---------------------------------------\n"
 

@@ -32,10 +32,6 @@ case "$1" in
   list)
     mysql -u root -e "SHOW DATABASES;"
     ;;
-  *)
-    echo "Usage: $0 {add|delete|list}"
-    exit 1
-    ;;
    remote)
     read -p "Enter username: " username
     # Check if user already exists

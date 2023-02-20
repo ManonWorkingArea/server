@@ -4,7 +4,8 @@ completed_tasks=()
 clear
 echo
 echo -e "#############################################"
-echo -e "\e[1mThis script will install and configure various software on your server.\e[0m"
+echo -e "\e[1mThsudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+is script will install and configure various software on your server.\e[0m"
 read -p "Do you want to continue? (y/n) " answer
 
 if [[ $answer != "y" ]]; then
