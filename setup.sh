@@ -1,7 +1,7 @@
 #!/bin/bash
 
 completed_tasks=()
-
+clear
 echo -e "#############################################"
 echo -e "\e[1mThis script will install and configure various software on your server.\e[0m"
 read -p "Do you want to continue? (y/n) " answer
@@ -10,7 +10,7 @@ if [[ $answer != "y" ]]; then
   echo "Setup cancelled."
   exit 0
 fi
-
+echo -e "#############################################"
 # Install packages
 echo -e "\e[1m1.Installing packages...\e[0m"
 apt-get update
