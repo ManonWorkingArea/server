@@ -14,7 +14,7 @@ echo -e "#############################################"
 # Install packages
 echo -e "\e[1m1.Installing packages...\e[0m"
 apt-get update
-apt-get install -y mariadb-server curl s3cmd glances htop
+apt-get install -y curl s3cmd glances htop
 echo "Done installing packages."
 completed_tasks+=("Install packages")
 echo -e "#############################################\n"
@@ -32,14 +32,6 @@ echo -e "\e[1m3.Changing timezone...\e[0m"
 timedatectl set-timezone Asia/Bangkok
 echo "Done changing timezone."
 completed_tasks+=("Change timezone")
-echo -e "#############################################\n"
-
-# Configure Mariadb for remote access
-echo -e "\e[1m4.Configuring MariaDB for remote access...\e[0m"
-sed -i 's/bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
-systemctl restart mariadb.service
-echo "Done configuring MariaDB."
-completed_tasks+=("Configure MariaDB")
 echo -e "#############################################\n"
 
 # Download and make executable database.sh
