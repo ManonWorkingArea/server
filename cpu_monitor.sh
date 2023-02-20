@@ -13,6 +13,7 @@ fi
 # Load API URL from config file
 source $CONFIG_FILE
 
+
 # Get server stats
 UPTIME=$(uptime)
 CPU_LOAD=$(top -bn1 | grep load | awk '{printf "%.2f", $(NF-2)}')
