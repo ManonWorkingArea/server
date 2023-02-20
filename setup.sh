@@ -2,9 +2,7 @@
 
 completed_tasks=()
 
-echo -e "#############################################\n\n"
-echo -e "#############################################\n\n"
-echo -e "#############################################\n\n"
+echo -e "#############################################"
 echo -e "\e[1mThis script will install and configure various software on your server.\e[0m"
 read -p "Do you want to continue? (y/n) " answer
 
@@ -19,7 +17,7 @@ apt-get update
 apt-get install -y mariadb-server curl s3cmd glances htop
 echo "Done installing packages."
 completed_tasks+=("Install packages")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Change hostname
 echo -e "\e[1m2.Changing hostname...\e[0m"
@@ -27,14 +25,14 @@ read -p "Enter new hostname: " new_hostname
 hostnamectl set-hostname $new_hostname
 echo "Done changing hostname."
 completed_tasks+=("Change hostname")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Change timezone
 echo -e "\e[1m3.Changing timezone...\e[0m"
 timedatectl set-timezone Asia/Bangkok
 echo "Done changing timezone."
 completed_tasks+=("Change timezone")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Configure Mariadb for remote access
 echo -e "\e[1m4.Configuring MariaDB for remote access...\e[0m"
@@ -44,21 +42,21 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '' WIT
 mysql -u root -e "FLUSH PRIVILEGES;"
 echo "Done configuring MariaDB."
 completed_tasks+=("Configure MariaDB")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Add firewall rule for Mariadb SQL port
 echo -e "\e[1m5.Adding firewall rule for MariaDB SQL port...\e[0m"
 ufw allow 3306/tcp
 echo "Done adding firewall rule."
 completed_tasks+=("Add firewall rule for MariaDB")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Enable firewall
 echo -e "\e[1m6.Enabling firewall...\e[0m"
 ufw --force enable
 echo "Done enabling firewall."
 completed_tasks+=("Enable firewall")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Download and make executable database.sh
 echo -e "\e[1m7.Downloading and making database.sh executable...\e[0m"
@@ -66,7 +64,7 @@ curl -o database.sh https://raw.githubusercontent.com/ManonWorkingArea/server/ma
 chmod +x database.sh
 echo "Done downloading and making database.sh executable."
 completed_tasks+=("Download and make database.sh executable")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Download and make executable backup.sh
 echo -e "\e[1m8.Downloading and making backup.sh executable...\e[0m"
@@ -74,7 +72,7 @@ curl -o backup.sh https://raw.githubusercontent.com/ManonWorkingArea/server/main
 chmod +x backup.sh
 echo "Done downloading and making backup.sh executable."
 completed_tasks+=("Download and make backup.sh executable")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Download and make executable monitor.sh
 echo -e "\e[1m9.Downloading and making backup.sh executable...\e[0m"
@@ -83,7 +81,7 @@ chmod +x monitor.sh
 echo "Done downloading and making monitor.sh executable."
 completed_tasks+=("Download and make monils
 tor.sh executable")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Add alias for backup
 echo -e "\e[1m10.Adding alias for backup...\e[0m"
@@ -91,7 +89,7 @@ echo "alias backup='/root/backup.sh'" >> ~/.bashrc
 source ~/.bashrc
 echo "Done adding alias for backup."
 completed_tasks+=("Add alias for backup")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Add alias for database
 echo -e "\e[1m11.Adding alias for database...\e[0m"
@@ -99,7 +97,7 @@ echo "alias database='/root/database.sh'" >> ~/.bashrc
 source ~/.bashrc
 echo "Done adding alias for database."
 completed_tasks+=("Add alias for database")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Add alias for monitor
 echo -e "\e[1m12.Adding alias for monitor...\e[0m"
@@ -107,20 +105,20 @@ echo "alias monitor='/root/monitor.sh'" >> ~/.bashrc
 source ~/.bashrc
 echo "Done adding alias for monitor."
 completed_tasks+=("Add alias for monitor")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 
 # Add cron job to run backup.sh every hour
 echo -e "\e[1m13.Add cron job to run backup.sh every hour...\e[0m"
 (crontab -l 2>/dev/null; echo "0 * * * * /root/backup.sh") | crontab -
 completed_tasks+=("Added cron job to run backup.sh every hour")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Add cron job to run monitor.sh every hour
 echo -e "\e[1m14.Add cron job to run monitor.sh every hour...\e[0m"
 (crontab -l 2>/dev/null; echo "*/30 * * * * /root/monitor.sh") | crontab -
 completed_tasks+=("Added cron job to run monitor.sh every hour")
-echo -e "#############################################\n\n"
+echo -e "#############################################\n"
 
 # Show instructions
 echo -e "\n\e[1mBACKUP INSTRUCTIONS\e[0m"
