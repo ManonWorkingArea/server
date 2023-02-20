@@ -27,14 +27,14 @@ completed_tasks+=("Change hostname")
 echo "#############################################"
 
 # Change timezone
-echo "Changing timezone..."
+echo "3.Changing timezone..."
 timedatectl set-timezone Asia/Bangkok
 echo "Done changing timezone."
 completed_tasks+=("Change timezone")
 echo "#############################################"
 
 # Configure Mariadb for remote access
-echo "Configuring MariaDB for remote access..."
+echo "4.Configuring MariaDB for remote access..."
 sed -i 's/bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
 systemctl restart mariadb.service
 mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '' WITH GRANT OPTION;"
@@ -44,21 +44,21 @@ completed_tasks+=("Configure MariaDB")
 echo "#############################################"
 
 # Add firewall rule for Mariadb SQL port
-echo "Adding firewall rule for MariaDB SQL port..."
+echo "5.Adding firewall rule for MariaDB SQL port..."
 ufw allow 3306/tcp
 echo "Done adding firewall rule."
 completed_tasks+=("Add firewall rule for MariaDB")
 echo "#############################################"
 
 # Enable firewall
-echo "Enabling firewall..."
+echo ".Enabling firewall..."
 ufw --force enable
 echo "Done enabling firewall."
 completed_tasks+=("Enable firewall")
 echo "#############################################"
 
 # Download and make executable database.sh
-echo "Downloading and making database.sh executable..."
+echo "7.Downloading and making database.sh executable..."
 curl -o database.sh https://raw.githubusercontent.com/ManonWorkingArea/server/main/database.sh
 chmod +x database.sh
 echo "Done downloading and making database.sh executable."
@@ -66,7 +66,7 @@ completed_tasks+=("Download and make database.sh executable")
 echo "#############################################"
 
 # Download and make executable backup.sh
-echo "Downloading and making backup.sh executable..."
+echo "8.Downloading and making backup.sh executable..."
 curl -o backup.sh https://raw.githubusercontent.com/ManonWorkingArea/server/main/backup.sh
 chmod +x backup.sh
 echo "Done downloading and making backup.sh executable."
@@ -74,7 +74,7 @@ completed_tasks+=("Download and make backup.sh executable")
 echo "#############################################"
 
 # Download and make executable monitor.sh
-echo "Downloading and making backup.sh executable..."
+echo "9.Downloading and making backup.sh executable..."
 curl -o monitor.sh https://raw.githubusercontent.com/ManonWorkingArea/server/main/monitor.sh
 chmod +x monitor.sh
 echo "Done downloading and making monitor.sh executable."
@@ -83,7 +83,7 @@ tor.sh executable")
 echo "#############################################"
 
 # Add alias for backup
-echo "Adding alias for backup..."
+echo "10.Adding alias for backup..."
 echo "alias backup='/root/backup.sh'" >> ~/.bashrc
 source ~/.bashrc
 echo "Done adding alias for backup."
@@ -91,7 +91,7 @@ completed_tasks+=("Add alias for backup")
 echo "#############################################"
 
 # Add alias for database
-echo "Adding alias for database..."
+echo "11.Adding alias for database..."
 echo "alias database='/root/database.sh'" >> ~/.bashrc
 source ~/.bashrc
 echo "Done adding alias for database."
@@ -99,7 +99,7 @@ completed_tasks+=("Add alias for database")
 echo "#############################################"
 
 # Add alias for monitor
-echo "Adding alias for monitor..."
+echo "12.Adding alias for monitor..."
 echo "alias monitor='/root/monitor.sh'" >> ~/.bashrc
 source ~/.bashrc
 echo "Done adding alias for monitor."
@@ -108,13 +108,13 @@ echo "#############################################"
 
 
 # Add cron job to run backup.sh every hour
-echo "Add cron job to run backup.sh every hour..."
+echo "13.Add cron job to run backup.sh every hour..."
 (crontab -l 2>/dev/null; echo "0 * * * * /root/backup.sh") | crontab -
 completed_tasks+=("Added cron job to run backup.sh every hour")
 echo "#############################################"
 
 # Add cron job to run monitor.sh every hour
-echo "Add cron job to run monitor.sh every hour..."
+echo "14.Add cron job to run monitor.sh every hour..."
 (crontab -l 2>/dev/null; echo "*/30 * * * * /root/monitor.sh") | crontab -
 completed_tasks+=("Added cron job to run monitor.sh every hour")
 echo "#############################################"
