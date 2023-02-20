@@ -18,7 +18,7 @@ hostnamectl set-hostname "$new_hostname"
 timedatectl set-timezone Asia/Bangkok
 
 # Download and make scripts executable
-declare -a scripts=("database.sh" "backup.sh" "monitor.sh")
+declare -a scripts=("database.sh" "backup.sh" "monitor.sh","mariadb.sh","webserver.sh","git.sh")
 for script in "${scripts[@]}"; do
   echo "Downloading and making $script executable..."
   curl -o "$script" "https://raw.githubusercontent.com/ManonWorkingArea/server/main/$script"
@@ -26,7 +26,7 @@ for script in "${scripts[@]}"; do
 done
 
 # Add aliases for scripts
-declare -a aliases=("backup" "database" "monitor")
+declare -a aliases=("backup" "database" "monitor","mariadb","webserver","git")
 for alias in "${aliases[@]}"; do
   echo "Adding alias for $alias..."
   echo "alias $alias='/root/$alias.sh'" >> ~/.bashrc
