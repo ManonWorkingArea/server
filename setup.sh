@@ -73,6 +73,14 @@ echo "Done downloading and making backup.sh executable."
 completed_tasks+=("Download and make backup.sh executable")
 echo "#############################################"
 
+# Download and make executable monitor.sh
+echo "Downloading and making backup.sh executable..."
+curl -o backup.sh https://raw.githubusercontent.com/ManonWorkingArea/server/main/monitor.sh
+chmod +x monitor.sh
+echo "Done downloading and making monitor.sh executable."
+completed_tasks+=("Download and make monitor.sh executable")
+echo "#############################################"
+
 # Add alias for backup
 echo "Adding alias for backup..."
 echo "alias backup='/root/backup.sh'" >> ~/.bashrc
@@ -89,10 +97,25 @@ echo "Done adding alias for database."
 completed_tasks+=("Add alias for database")
 echo "#############################################"
 
+# Add alias for monitor
+echo "Adding alias for monitor..."
+echo "alias monitor='/root/monitor.sh'" >> ~/.bashrc
+source ~/.bashrc
+echo "Done adding alias for monitor."
+completed_tasks+=("Add alias for monitor")
+echo "#############################################"
+
+
 # Add cron job to run backup.sh every hour
 echo "Add cron job to run backup.sh every hour..."
 (crontab -l 2>/dev/null; echo "0 * * * * /root/backup.sh") | crontab -
 completed_tasks+=("Added cron job to run backup.sh every hour")
+echo "#############################################"
+
+# Add cron job to run monitor.sh every hour
+echo "Add cron job to run monitor.sh every hour..."
+(crontab -l 2>/dev/null; echo "*/30 * * * * /root/monitor.sh") | crontab -
+completed_tasks+=("Added cron job to run monitor.sh every hour")
 echo "#############################################"
 
 # Get the server's IP address and display it to the user
@@ -110,6 +133,9 @@ echo -e "\e[1m./database.sh add\e[0m to add a new database."
 echo -e "\e[1m./database.sh delete\e[0m to delete a database."
 echo -e "\e[1m./database.sh list\e[0m to list all databases on the server."
 echo -e "You will need to provide the MySQL root username and password in the database.sh script before running it."
+
+echo -e "\n\e[1mGLANCES INSTRUCTIONS\e[0m"
+echo -e "\nTo use glances, run \e[1m'glances'\e[0m in the terminal. This will show server stat"
 
 # Show server information
 echo -e "\n\e[1mSERVER INFORMATION\e[0m"
