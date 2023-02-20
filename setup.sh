@@ -9,6 +9,7 @@ if [[ $answer != "y" ]]; then
   echo "Setup cancelled."
   exit 0
 fi
+clear
 
 # Install packages
 echo "Installing packages..."
@@ -17,6 +18,8 @@ apt-get install -y mariadb-server curl s3cmd glances htop
 echo "Done installing packages."
 completed_tasks+=("Install packages")
 
+clear
+
 # Change hostname
 echo "Changing hostname..."
 read -p "Enter new hostname: " new_hostname
@@ -24,11 +27,15 @@ hostnamectl set-hostname $new_hostname
 echo "Done changing hostname."
 completed_tasks+=("Change hostname")
 
+clear
+
 # Change timezone
 echo "Changing timezone..."
 timedatectl set-timezone Asia/Bangkok
 echo "Done changing timezone."
 completed_tasks+=("Change timezone")
+
+clear
 
 # Configure Mariadb for remote access
 echo "Configuring MariaDB for remote access..."
@@ -39,17 +46,23 @@ mysql -u root -e "FLUSH PRIVILEGES;"
 echo "Done configuring MariaDB."
 completed_tasks+=("Configure MariaDB")
 
+clear
+
 # Add firewall rule for Mariadb SQL port
 echo "Adding firewall rule for MariaDB SQL port..."
 ufw allow 3306/tcp
 echo "Done adding firewall rule."
 completed_tasks+=("Add firewall rule for MariaDB")
 
+clear
+
 # Enable firewall
 echo "Enabling firewall..."
 ufw --force enable
 echo "Done enabling firewall."
 completed_tasks+=("Enable firewall")
+
+clear
 
 # Download and make executable database.sh
 echo "Downloading and making database.sh executable..."
@@ -58,12 +71,16 @@ chmod +x database.sh
 echo "Done downloading and making database.sh executable."
 completed_tasks+=("Download and make database.sh executable")
 
+clear
+
 # Download and make executable backup.sh
 echo "Downloading and making backup.sh executable..."
 curl -o backup.sh https://raw.githubusercontent.com/ManonWorkingArea/server/main/backup.sh
 chmod +x backup.sh
 echo "Done downloading and making backup.sh executable."
 completed_tasks+=("Download and make backup.sh executable")
+
+clear
 
 # Add alias for backup
 echo "Adding alias for backup..."
@@ -72,12 +89,16 @@ source ~/.bashrc
 echo "Done adding alias for backup."
 completed_tasks+=("Add alias for backup")
 
+clear
+
 # Add alias for database
 echo "Adding alias for database..."
 echo "alias database='/root/database.sh'" >> ~/.bashrc
 source ~/.bashrc
 echo "Done adding alias for database."
 completed_tasks+=("Add alias for database")
+
+clear
 
 # Get the server's IP address and display it to the user
 SERVER_IP=$(hostname -I | awk '{print $1}')
