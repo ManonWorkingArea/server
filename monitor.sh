@@ -3,7 +3,9 @@
 # Check if API URL is set
 if [ -z "$API_URL" ]; then
   read -p "Enter the API URL to send server information: " API_URL
-  echo "API_URL=$API_URL" >> /root/monitor.sh
+  echo "API_URL=\"$API_URL\"" >> /root/monitor.sh
+else
+  source /root/monitor.sh
 fi
 
 # Get server stats
